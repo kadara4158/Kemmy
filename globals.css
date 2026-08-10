@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #4F46E5;
+  --color-secondary: #5BC8AF;
+  --color-bg: #FAFAF7;
+  --color-surface: #FFFFFF;
+  --color-accent: #FF8C7A;
+  --color-success: #73C991;
+  --color-warning: #F4B740;
+  --color-text-primary: #1F2937;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* Calm UI utilities */
+.calm-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px -2px rgba(31, 41, 55, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calm-card:hover {
+  box-shadow: 0 8px 30px -4px rgba(31, 41, 55, 0.08);
+}
+
+.next-best-step-card {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.04) 0%, rgba(91, 200, 175, 0.08) 100%);
+  border: 1.5px solid rgba(79, 70, 229, 0.2);
+  border-radius: 20px;
+}
+
+.btn-calm-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.btn-calm-primary:hover {
+  background-color: #4338CA;
+  transform: translateY(-1px);
+}
+
+.btn-calm-secondary {
+  background-color: rgba(91, 200, 175, 0.15);
+  color: #0D9488;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(91, 200, 175, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.btn-calm-secondary:hover {
+  background-color: rgba(91, 200, 175, 0.25);
+}
+
+.badge-roadmap {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
