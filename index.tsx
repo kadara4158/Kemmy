@@ -1,244 +1,282 @@
 import React, { useState } from 'react';
 import { CalmCard } from '../../components/common/CalmCard';
 import { PlaceholderCard } from '../../components/common/PlaceholderCard';
-import { NavSection, Task } from '../../types';
-import { useTasks } from '../../context/TaskContext';
-import { useAuth } from '../../context/AuthContext';
-import { useAI } from '../../context/AIContext';
+import { useLearning } from '../../context/LearningContext';
 
-interface HomePageProps {
-  onNavigate: (section: NavSection) => void;
-  onOpenAddTask: (taskToEdit?: Task, defaultDate?: string) => void;
-}
+export const LearnPage: React.FC = () => {
+  const { topics, activeTopicId, setActiveTopicId, addMaterialToTopic, addNoteToTopic, markConceptCompleted, activeTopic } = useLearning();
 
-export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenAddTask }) => {
-  const { user } = useAuth();
-  const { tasks, toggleTask, nextBestStep, inferredState, expressNaturalState, clearInferredState, triggerChangeOfPlans } = useTasks();
-  const { sendMessage } = useAI();
+  const [newMaterialTitle, setNewMaterialTitle] = useState('');
+  const [newMaterialContent, setNewMaterialContent] = useState('');
+  const [showAddMaterialForm, setShowAddMaterialForm] = useState(false);
 
-  const [stateInput, setStateInput] = useState('');
-  const [isEditingState, setIsEditingState] = useState(false);
+  const [newNoteTitle, setNewNoteTitle] = useState('');
+  const [newNoteContent, setNewNoteContent] = useState('');
+  const [showAddNoteForm, setShowAddNoteForm] = useState(false);
 
-  const handleStateSubmit = (e: React.FormEvent) => {
+  const [aiBreakdownOutput, setAiBreakdownOutput] = useState<string | null>(null);
+
+  if (!activeTopic) return null;
+
+  const handleAddMaterial = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!stateInput.trim()) return;
-    expressNaturalState(stateInput);
-    setIsEditingState(false);
+    if (!newMaterialTitle.trim() || !newMaterialContent.trim()) return;
+
+    addMaterialToTopic(activeTopic.id, {
+      title: newMaterialTitle,
+      subject: activeTopic.subject,
+      sourceType: 'article',
+      content: newMaterialContent,
+      summary: newMaterialContent.slice(0, 100) + '...',
+      keyTakeaways: ['Imported learning resource.', 'Ready for AI concept breakdown.']
+    });
+
+    setNewMaterialTitle('');
+    setNewMaterialContent('');
+    setShowAddMaterialForm(false);
+  };
+
+  const handleAddNote = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newNoteTitle.trim() || !newNoteContent.trim()) return;
+
+    addNoteToTopic(activeTopic.id, newNoteTitle, newNoteContent);
+    setNewNoteTitle('');
+    setNewNoteContent('');
+    setShowAddNoteForm(false);
+  };
+
+  const handleExplainMaterial = (contentStr: string) => {
+    setAiBreakdownOutput(
+      `Concept Breakdown (${activeTopic.title}):\n1. Key Idea: ${contentStr.slice(0, 120)}\n2. Application: Custom architecture logic decouples UI rendering from complex state mutations.\n3. Summary: Focus on understanding underlying data flow patterns rather than memorizing syntax.`
+    );
   };
 
   return (
     <div className="space-y-6">
-      {/* Welcome Sanctuary Banner */}
-      <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-emerald-900 text-white rounded-2xl p-6 shadow-sm">
-        <div className="max-w-2xl space-y-2">
-          <span className="text-[11px] uppercase tracking-widest font-bold text-emerald-300">
-            Learner Sanctuary • Flexible Progress
-          </span>
-          <h2 className="text-2xl font-bold">Welcome back, {user.name}</h2>
-          <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed opacity-90">
-            “Progress is measured by understanding, not exhaustion. Focus on one meaningful step at a time.”
+      <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)]">Adaptive Learning Workspace</h2>
+          <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+            Import materials, take study notes, and work interactively with Kemmy AI.
           </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowAddNoteForm(true)}
+            className="btn-calm-secondary text-xs py-2 px-3.5"
+          >
+            + Add Note
+          </button>
+          <button
+            onClick={() => setShowAddMaterialForm(true)}
+            className="btn-calm-primary text-xs py-2 px-4 shadow-sm"
+          >
+            + Import Material
+          </button>
         </div>
       </div>
 
-      {/* NATURAL STATE EXPRESSION INPUT (Section 2 of Brief) */}
-      <CalmCard
-        title="How are your circumstances feeling today?"
-        subtitle="Express your current situation naturally — Kemmy adapts without forcing rigid mood labels."
-      >
-        {inferredState && !isEditingState ? (
-          <div className="space-y-3">
-            <div className="p-4 bg-indigo-50/70 border border-indigo-100 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-indigo-950">
-              <div>
-                <span className="font-bold text-indigo-900 block text-[11px] uppercase tracking-wide">
-                  Expressed Context:
-                </span>
-                <p className="text-sm font-medium text-indigo-900 mt-0.5">"{inferredState.rawText}"</p>
-                <div className="text-[11px] text-indigo-700 mt-1">
-                  Kemmy Inferred Working Context: <span className="font-semibold">{inferredState.perceivedFocus}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setIsEditingState(true)}
-                  className="text-xs font-semibold text-indigo-700 hover:underline px-2.5 py-1 rounded bg-white/70 border border-indigo-200"
-                >
-                  Clarify / Update
-                </button>
-                <button
-                  onClick={clearInferredState}
-                  className="text-xs font-medium text-gray-500 hover:text-gray-700"
-                >
-                  Clear
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <form onSubmit={handleStateSubmit} className="space-y-3">
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={stateInput}
-                onChange={(e) => setStateInput(e.target.value)}
-                placeholder='e.g. "I have no energy today but I still need to finish two assignments"'
-                className="flex-1 px-4 py-2.5 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs sm:text-sm focus:outline-none focus:border-indigo-500 text-[var(--color-text-primary)]"
-              />
-              <button type="submit" className="btn-calm-primary text-xs py-2.5 px-4">
-                Share Context
-              </button>
-            </div>
-            <p className="text-[11px] text-[var(--color-text-muted)]">
-              *Kemmy uses this signal to tailor recommendations without turning your internal state into a permanent label.
-            </p>
-          </form>
-        )}
-      </CalmCard>
-
-      {/* SINGLE NEXT BEST STEP CARD (Section 15: The Next Step Is Always Visible) */}
-      {nextBestStep ? (
-        <CalmCard isHighlight title="Today's Single Next Best Step" subtitle="Selected to minimize choice paralysis based on your current context">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-900 uppercase">
-                  {nextBestStep.category}
-                </span>
-                <span className="text-xs text-[var(--color-text-muted)]">• {nextBestStep.estimatedMinutes} mins</span>
-                <span className="text-xs font-medium text-emerald-700 capitalize">• {nextBestStep.energyRequired} Energy</span>
-              </div>
-              <h4 className="text-lg font-bold text-[var(--color-text-primary)]">{nextBestStep.title}</h4>
-              {nextBestStep.notes && (
-                <p className="text-xs text-[var(--color-text-muted)]">{nextBestStep.notes}</p>
-              )}
-            </div>
-            <div className="flex items-center gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Topic Navigator */}
+        <CalmCard title="Active Learning Topics" className="md:col-span-1">
+          <div className="space-y-2 mt-1">
+            {topics.map((t) => (
               <button
-                onClick={() => onNavigate('learn')}
-                className="btn-calm-primary text-xs py-2.5 px-5 shadow-sm"
-              >
-                Start {nextBestStep.estimatedMinutes}m Focus Block
-              </button>
-            </div>
-          </div>
-        </CalmCard>
-      ) : (
-        <CalmCard isHighlight title="All Tasks Completed!">
-          <p className="text-xs text-[var(--color-text-muted)]">Great effort today! Rest and reflect freely.</p>
-        </CalmCard>
-      )}
-
-      {/* Today's Priorities Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <CalmCard
-          title="Today's Manageable Priorities"
-          subtitle={`${tasks.filter((t) => !t.completed).length} of ${tasks.length} focus blocks remaining`}
-          headerAction={
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => onOpenAddTask()}
-                className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
-              >
-                + Add Plan
-              </button>
-              <button
-                onClick={() => onNavigate('plan')}
-                className="text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"
-              >
-                Calendar View →
-              </button>
-            </div>
-          }
-        >
-          <div className="space-y-3 mt-1">
-            {tasks.map((t) => (
-              <div
                 key={t.id}
-                className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
-                  t.isNextBestStep
-                    ? 'bg-indigo-50/50 border-indigo-200'
-                    : 'bg-[var(--color-bg)] border-[var(--color-border)]'
+                onClick={() => {
+                  setActiveTopicId(t.id);
+                  setAiBreakdownOutput(null);
+                }}
+                className={`w-full p-3 rounded-xl border text-left transition-all ${
+                  activeTopicId === t.id
+                    ? 'border-indigo-300 bg-indigo-50/70 shadow-sm'
+                    : 'border-[var(--color-border)] hover:bg-[var(--color-bg)]'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={t.completed}
-                    onChange={() => toggleTask(t.id)}
-                    className="w-4 h-4 rounded text-indigo-600"
-                  />
-                  <div>
-                    <div className={`text-sm font-medium ${t.completed ? 'line-through text-[var(--color-text-muted)]' : 'text-[var(--color-text-primary)]'}`}>
-                      {t.title}
-                    </div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{t.estimatedMinutes} mins • {t.energyRequired} Energy</div>
-                  </div>
+                <div className="text-xs text-indigo-700 font-semibold">{t.subject}</div>
+                <div className="text-sm font-bold text-[var(--color-text-primary)] mt-0.5">{t.title}</div>
+                <div className="text-[11px] text-[var(--color-text-muted)] mt-1 font-medium">
+                  {t.materials.length} material{t.materials.length === 1 ? '' : 's'} • {t.notes.length} note{t.notes.length === 1 ? '' : 's'}
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => onOpenAddTask(t)}
-                    className="text-[11px] text-[var(--color-text-muted)] hover:text-indigo-600"
-                  >
-                    Edit
-                  </button>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded font-medium ${
-                      t.completed
-                        ? 'bg-emerald-50 text-emerald-700'
-                        : t.isNextBestStep
-                        ? 'bg-indigo-100 text-indigo-900 font-semibold'
-                        : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'
-                    }`}
-                  >
-                    {t.completed ? 'Completed' : t.isNextBestStep ? 'Next Best Step' : 'Scheduled'}
-                  </span>
+                <div className="w-full bg-gray-200 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <div
+                    className="bg-indigo-600 h-full rounded-full transition-all duration-300"
+                    style={{ width: `${t.progressPercent}%` }}
+                  ></div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </CalmCard>
 
-        {/* Change of Plans Quick Action & Adaptive AI Widget */}
-        <CalmCard title="Adaptive Schedule Guidance">
-          <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-emerald-900 uppercase tracking-wide">
-                🌿 Change of Plans Assistant
-              </span>
-              <span className="text-[10px] text-emerald-700 font-semibold">Explainable AI</span>
-            </div>
-            <p className="text-xs text-emerald-950 leading-relaxed">
-              "If your circumstances change or energy shifts, Kemmy adapts your workload without penalties or judgment."
-            </p>
-            <div className="pt-2 flex items-center justify-between">
+        {/* Interactive Workspace & Materials */}
+        <div className="md:col-span-2 space-y-4">
+          {/* Active Concept Breakdown */}
+          <CalmCard
+            title={activeTopic.title}
+            subtitle={`Progress: ${activeTopic.progressPercent}% • ${activeTopic.estimatedMinutes}m Focus Block`}
+            headerAction={
               <button
-                onClick={() => triggerChangeOfPlans()}
+                onClick={() => markConceptCompleted(activeTopic.id)}
                 className="btn-calm-secondary text-xs py-1.5 px-3"
               >
-                Trigger Replanner
+                Mark Concept Understood (+20%)
               </button>
-              <button
-                onClick={() => {
-                  sendMessage("How can I adjust my schedule for today?");
-                  onNavigate('companion');
-                }}
-                className="text-xs font-medium text-emerald-800 hover:underline"
-              >
-                Ask Kemmy Companion →
-              </button>
+            }
+          >
+            <div className="space-y-4 text-xs text-[var(--color-text-primary)] leading-relaxed">
+              <div className="p-4 bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] space-y-2">
+                <h4 className="font-bold text-[var(--color-text-primary)] text-sm">Next Focus Concept: {activeTopic.nextConcept}</h4>
+                <p>
+                  Kemmy adapts learning material into small digestible focus steps so you can make meaningful progress without cognitive fatigue.
+                </p>
+              </div>
+
+              {aiBreakdownOutput && (
+                <div className="p-4 bg-teal-50/70 border border-teal-200 rounded-xl space-y-2 text-teal-950">
+                  <strong className="font-bold text-teal-900 block text-xs">🤖 Kemmy AI Concept Analysis:</strong>
+                  <pre className="whitespace-pre-wrap font-sans text-xs">{aiBreakdownOutput}</pre>
+                </div>
+              )}
             </div>
-          </div>
-        </CalmCard>
+          </CalmCard>
+
+          {/* Imported Learning Materials List (Section 5 of Brief) */}
+          <CalmCard title={`Imported Learning Materials (${activeTopic.materials.length})`}>
+            <div className="space-y-3 mt-1">
+              {activeTopic.materials.length > 0 ? (
+                activeTopic.materials.map((mat) => (
+                  <div key={mat.id} className="p-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-sm text-[var(--color-text-primary)]">{mat.title}</h4>
+                      <button
+                        onClick={() => handleExplainMaterial(mat.content)}
+                        className="btn-calm-primary text-xs py-1 px-3"
+                      >
+                        Explain with Kemmy AI
+                      </button>
+                    </div>
+                    <p className="text-xs text-[var(--color-text-muted)] line-clamp-3">{mat.content}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-[var(--color-text-muted)] italic">No imported materials for this topic yet. Click "+ Import Material" above to add articles or readings.</p>
+              )}
+            </div>
+          </CalmCard>
+
+          {/* Study Notes List (Section 5 of Brief) */}
+          <CalmCard title={`Study Notes (${activeTopic.notes.length})`}>
+            <div className="space-y-3 mt-1">
+              {activeTopic.notes.length > 0 ? (
+                activeTopic.notes.map((note) => (
+                  <div key={note.id} className="p-3 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl space-y-1 text-xs">
+                    <h5 className="font-semibold text-[var(--color-text-primary)]">{note.title}</h5>
+                    <p className="text-[var(--color-text-muted)]">{note.content}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-[var(--color-text-muted)] italic">No notes created yet. Click "+ Add Note" to record key takeaways.</p>
+              )}
+            </div>
+          </CalmCard>
+
+          <PlaceholderCard
+            title="AI Interactive Concept Visualizer"
+            roadmapPhase="Phase 4 — Intelligent Guidance"
+            description="Will generate dynamic interactive diagrams illustrating code architecture concepts visually."
+            intendedCapability="Renders real-time Mermaid diagrams and memory flow visualizers directly inside study modules."
+          />
+        </div>
       </div>
 
-      {/* Explicit Roadmap Placeholder */}
-      <PlaceholderCard
-        title="Predictive Energy-Pattern Forecaster"
-        roadmapPhase="Phase 4 — Intelligent Guidance"
-        description="Will analyze historical energy trends to proactively suggest schedule adjustments before fatigue occurs."
-        intendedCapability="Connects biometric or self-reported energy patterns over time to dynamically shift deadlines prior to burnout."
-      />
+      {/* Add Material Modal */}
+      {showAddMaterialForm && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[var(--color-surface)] rounded-2xl p-6 max-w-md w-full shadow-2xl border border-[var(--color-border)] space-y-4">
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Import Learning Material</h3>
+            <form onSubmit={handleAddMaterial} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-[var(--color-text-muted)] block mb-1">Material Title</label>
+                <input
+                  type="text"
+                  required
+                  value={newMaterialTitle}
+                  onChange={(e) => setNewMaterialTitle(e.target.value)}
+                  placeholder="e.g. React Custom Hooks Deep Dive"
+                  className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-[var(--color-text-muted)] block mb-1">Content / Reading Material</label>
+                <textarea
+                  rows={5}
+                  required
+                  value={newMaterialContent}
+                  onChange={(e) => setNewMaterialContent(e.target.value)}
+                  placeholder="Paste article, documentation, or study text here..."
+                  className="w-full p-3 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setShowAddMaterialForm(false)} className="px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-calm-primary text-xs py-1.5 px-4">
+                  Import Material
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Note Modal */}
+      {showAddNoteForm && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[var(--color-surface)] rounded-2xl p-6 max-w-md w-full shadow-2xl border border-[var(--color-border)] space-y-4">
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Add Study Note</h3>
+            <form onSubmit={handleAddNote} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-[var(--color-text-muted)] block mb-1">Note Title</label>
+                <input
+                  type="text"
+                  required
+                  value={newNoteTitle}
+                  onChange={(e) => setNewNoteTitle(e.target.value)}
+                  placeholder="e.g. Key rule: Hooks must start with 'use'"
+                  className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-[var(--color-text-muted)] block mb-1">Note Content</label>
+                <textarea
+                  rows={4}
+                  required
+                  value={newNoteContent}
+                  onChange={(e) => setNewNoteContent(e.target.value)}
+                  placeholder="Write your study note or insight..."
+                  className="w-full p-3 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setShowAddNoteForm(false)} className="px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-calm-primary text-xs py-1.5 px-4">
+                  Save Note
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
