@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="open_daylight">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kemmy — Adaptive AI Learning Companion (XPRIZE Baseline MVP)</title>
+  <title>Kemmy — Adaptive AI Learning Companion</title>
   
-  <!-- Typography -->
+  <!-- Typography: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -17,15 +17,14 @@
       theme: {
         extend: {
           colors: {
-            kemmyPrimary: '#4F46E5',
-            kemmySecondary: '#5BC8AF',
-            kemmyBg: '#FAFAF7',
-            kemmyAccent: '#FF8C7A',
-            kemmySuccess: '#73C991',
-            kemmyWarning: '#F4B740'
+            kemmyPrimary: '#312E81',
+            kemmySecondary: '#2D4A3E',
+            kemmyBg: '#FAF8F5',
+            kemmyAccent: '#D97706',
+            kemmySuccess: '#166534'
           },
           fontFamily: {
-            heading: ['Poppins', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
             sans: ['Inter', 'sans-serif']
           }
         }
@@ -39,61 +38,92 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
+    :root {
+      --color-bg: #FAF8F5;
+      --color-surface: #FFFFFF;
+      --color-text-primary: #1E2022;
+      --color-text-muted: #64748B;
+      --color-border: #E2E8F0;
+      --color-primary: #312E81;
+      --color-secondary: #2D4A3E;
+    }
+    [data-theme="calm_night"] {
+      --color-bg: #121316;
+      --color-surface: #1E2024;
+      --color-text-primary: #F1F5F9;
+      --color-text-muted: #94A3B8;
+      --color-border: #2E3238;
+      --color-primary: #818CF8;
+      --color-secondary: #4ADE80;
+    }
     body {
-      background-color: #FAFAF7;
-      color: #1F2937;
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
       font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
     h1, h2, h3, h4, h5, h6 {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .calm-card {
-      background: #FFFFFF;
-      border: 1px solid #E5E7EB;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
       border-radius: 16px;
-      box-shadow: 0 4px 20px -2px rgba(31, 41, 55, 0.04);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
       transition: all 0.2s ease;
     }
-    .calm-card:hover {
-      box-shadow: 0 8px 30px -4px rgba(31, 41, 55, 0.08);
-    }
     .next-best-step-card {
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.04) 0%, rgba(91, 200, 175, 0.08) 100%);
-      border: 1.5px solid rgba(79, 70, 229, 0.2);
+      background: linear-gradient(135deg, rgba(49, 46, 129, 0.04) 0%, rgba(45, 74, 62, 0.06) 100%);
+      border: 1.5px solid rgba(49, 46, 129, 0.25);
       border-radius: 20px;
     }
+    [data-theme="calm_night"] .next-best-step-card {
+      background: linear-gradient(135deg, rgba(129, 140, 248, 0.08) 0%, rgba(74, 222, 128, 0.08) 100%);
+      border: 1.5px solid rgba(129, 140, 248, 0.3);
+    }
     .btn-calm-primary {
-      background-color: #4F46E5;
+      background-color: var(--color-primary);
       color: #ffffff;
       padding: 10px 20px;
       border-radius: 12px;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       transition: all 0.2s ease;
-    }
-    .btn-calm-primary:hover {
-      background-color: #4338CA;
-      transform: translateY(-1px);
     }
     .btn-calm-secondary {
-      background-color: rgba(91, 200, 175, 0.15);
-      color: #0D9488;
+      background-color: rgba(45, 74, 62, 0.1);
+      color: var(--color-secondary);
       padding: 10px 20px;
       border-radius: 12px;
-      font-weight: 500;
-      border: 1px solid rgba(91, 200, 175, 0.3);
+      font-weight: 600;
+      border: 1px solid rgba(45, 74, 62, 0.25);
+      font-family: 'Plus Jakarta Sans', sans-serif;
       transition: all 0.2s ease;
     }
-    .btn-calm-secondary:hover {
-      background-color: rgba(91, 200, 175, 0.25);
-    }
     .badge-roadmap {
-      background: #EFF6FF;
-      color: #1D4ED8;
-      border: 1px solid #BFDBFE;
-      font-size: 0.75rem;
-      padding: 4px 10px;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--color-primary);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      font-size: 0.72rem;
+      padding: 3px 9px;
       border-radius: 9999px;
       font-weight: 600;
+    }
+    .kemmy-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #312E81 0%, #1E1B4B 100%);
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    [data-theme="calm_night"] .kemmy-mark {
+      background: linear-gradient(135deg, #6366F1 0%, #4338CA 100%);
     }
   </style>
 </head>
@@ -104,130 +134,143 @@
     const { useState, useEffect } = React;
 
     const NAV_ITEMS = [
-      { id: 'home', label: 'Home', icon: '🏠', desc: 'Today priorities & single Next Best Step' },
-      { id: 'plan', label: 'Plan', icon: '📅', desc: 'Energy schedule & dynamic replanning' },
+      { id: 'home', label: 'Home', icon: '🏠', desc: 'Today priorities & natural state' },
+      { id: 'plan', label: 'Plan', icon: '📅', desc: 'Interactive calendar & Change of Plans' },
       { id: 'companion', label: 'Companion', icon: '🤖', desc: 'Empathetic AI study assistant' },
-      { id: 'learn', label: 'Learn', icon: '📚', desc: 'Personal concept breakdown' },
-      { id: 'growth', label: 'Growth', icon: '🌱', desc: 'Minimal reflection journal' },
-      { id: 'profile', label: 'Profile', icon: '👤', desc: 'Ethical tier & privacy controls' }
+      { id: 'learn', label: 'Learn', icon: '📚', desc: 'Import materials & notes' },
+      { id: 'growth', label: 'Growth', icon: '🌱', desc: 'Progress analysis & reflection' },
+      { id: 'profile', label: 'Profile', icon: '👤', desc: 'Account & Kemmy preferences' }
     ];
 
     function App() {
       const [activeSection, setActiveSection] = useState('home');
-      const [showOverwhelmedModal, setShowOverwhelmedModal] = useState(false);
-      const [isReplanned, setIsReplanned] = useState(false);
+      const [themeMode, setThemeMode] = useState('open_daylight');
+      const [showChangeOfPlansModal, setShowChangeOfPlansModal] = useState(false);
+      const [showAuthModal, setShowAuthModal] = useState(false);
+      const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+
+      const [stateInput, setStateInput] = useState('');
+      const [expressedState, setExpressedState] = useState(null);
+
+      const [user, setUser] = useState({ name: 'Alex', email: 'alex@example.com', isAuthenticated: true });
+
+      const [tasks, setTasks] = useState([
+        { id: '1', title: 'Read Kemmy Architecture Docs', duration: 15, energy: 'low', done: true, date: '2026-08-15' },
+        { id: '2', title: 'Review React Hooks & State Contexts', duration: 25, energy: 'medium', done: false, isNext: true, date: '2026-08-15' },
+        { id: '3', title: 'Practice TypeScript Generics', duration: 45, energy: 'high', done: false, date: '2026-08-15' }
+      ]);
+
+      const [selectedDate, setSelectedDate] = useState('2026-08-15');
       const [journalText, setJournalText] = useState('');
-
-      const [tasks, setTasks] = useState(() => {
-        const saved = localStorage.getItem('kemmy_tasks');
-        return saved ? JSON.parse(saved) : [
-          { id: '1', title: 'Read Kemmy Architecture Docs', duration: '15m', energy: 'Low', done: true, isNext: false },
-          { id: '2', title: 'Review React Hooks & State', duration: '25m', energy: 'Medium', done: false, isNext: true },
-          { id: '3', title: 'Practice TypeScript Generics', duration: '40m', energy: 'High', done: false, isNext: false }
-        ];
-      });
-
-      useEffect(() => {
-        localStorage.setItem('kemmy_tasks', JSON.stringify(tasks));
-      }, [tasks]);
 
       const [chatMessages, setChatMessages] = useState([
         {
+          id: '1',
           sender: 'kemmy',
-          text: "Hello Alex. I'm Kemmy, your adaptive learning companion. How are your study sessions feeling today?",
+          text: "Hello Alex. I'm Kemmy, your adaptive learning companion. How are your focus blocks feeling today?",
           explanation: "Understand Before Advising: Kemmy opens by inquiring about context before offering advice."
         }
       ]);
       const [chatInput, setChatInput] = useState('');
 
+      const toggleTheme = () => {
+        const nextTheme = themeMode === 'open_daylight' ? 'calm_night' : 'open_daylight';
+        setThemeMode(nextTheme);
+        document.documentElement.setAttribute('data-theme', nextTheme);
+      };
+
+      const handleStateSubmit = (e) => {
+        e.preventDefault();
+        if (!stateInput.trim()) return;
+        setExpressedState(stateInput);
+      };
+
       const handleSendChat = () => {
         if (!chatInput.trim()) return;
-        const userMsg = { sender: 'user', text: chatInput };
-        setChatMessages(prev => [...prev, userMsg]);
-        const inputCopy = chatInput;
+        const textCopy = chatInput;
+        setChatMessages(prev => [...prev, { id: Date.now(), sender: 'user', text: textCopy }]);
         setChatInput('');
 
         setTimeout(() => {
-          setChatMessages(prev => [
-            ...prev,
-            {
-              sender: 'kemmy',
-              text: `I hear you regarding "${inputCopy}". Let's break it down into a single 15-minute concept review, or we can adjust your schedule for tomorrow if you feel tired.`,
-              explanation: "Reduce Cognitive Load & Sustainable Progress: Kemmy offers small manageable steps without pressure."
-            }
-          ]);
+          let kemmyReply = `Thank you for sharing that regarding "${textCopy}". How can I best support you right now—would you like to adjust your schedule or break down a concept?`;
+          let rationale = "Respect Context & Listen First: Kemmy responds directly to your content while preserving your agency.";
+
+          if (textCopy.toLowerCase().includes('plan') || textCopy.toLowerCase().includes('busy') || textCopy.toLowerCase().includes('tired')) {
+            kemmyReply = "I hear you. When plans change or energy drops, click 'Change of Plans' in your header to rebalance your day—we can postpone heavy tasks to tomorrow with zero penalty.";
+            rationale = "Adapt Continuously & Be Calm by Default: Protecting learner energy without pressure.";
+          } else if (textCopy.toLowerCase().includes('react') || textCopy.toLowerCase().includes('state')) {
+            kemmyReply = "React state logic is cleanest when decoupled from UI render loops. Custom Hooks act as reusable logic controllers while Context holds global settings. Shall we review a 10m breakdown in Learn?";
+            rationale = "Explain Recommendations: Providing structured concept clarity.";
+          }
+
+          setChatMessages(prev => [...prev, { id: Date.now() + 1, sender: 'kemmy', text: kemmyReply, explanation: rationale }]);
         }, 600);
       };
 
       const triggerReplanning = () => {
-        setIsReplanned(true);
-        setTasks(prev => prev.filter(t => t.energy !== 'High' || t.done));
-        setShowOverwhelmedModal(false);
+        setTasks(prev => prev.map(t => t.energy === 'high' ? { ...t, date: '2026-08-16' } : t));
+        setShowChangeOfPlansModal(false);
       };
 
       const nextBestStep = tasks.find(t => !t.done && t.isNext) || tasks.find(t => !t.done);
 
       return (
         <div className="min-h-screen flex flex-col">
-          {/* Top Header */}
-          <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          {/* Header */}
+          <header className="sticky top-0 z-20 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-6 py-3.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                K
-              </div>
+              <div className="kemmy-mark">K</div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl font-bold text-gray-900 leading-none">Kemmy</h1>
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    XPRIZE Phase 2 MVP
-                  </span>
+                  <h1 className="text-xl font-bold leading-none">Kemmy</h1>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-900">Baseline</span>
                 </div>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {NAV_ITEMS.find(n => n.id === activeSection).label} • Local-First React Architecture
-                </p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{NAV_ITEMS.find(n => n.id === activeSection).label} • Adaptive Companion</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setShowOverwhelmedModal(true)}
-                className="btn-calm-secondary text-xs flex items-center gap-1.5 py-2 px-3"
-              >
-                <span className="inline-block w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-                I'm Overwhelmed
+            <div className="flex items-center gap-2.5">
+              <button onClick={() => setShowChangeOfPlansModal(true)} className="btn-calm-secondary text-xs flex items-center gap-1.5 py-2 px-3.5">
+                <span>🌿</span>
+                <span>Change of Plans</span>
+              </button>
+
+              <button onClick={toggleTheme} className="p-2 rounded-xl border border-[var(--color-border)] text-sm">
+                {themeMode === 'open_daylight' ? '🌙' : '☀️'}
+              </button>
+
+              <button onClick={() => setShowAuthModal(true)} className="px-3 py-2 text-xs font-semibold rounded-xl border border-[var(--color-border)] flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-900 font-bold flex items-center justify-center text-[10px]">
+                  {user.name.charAt(0)}
+                </div>
+                <span>{user.name}</span>
               </button>
             </div>
           </header>
 
           <div className="flex flex-1">
             {/* Desktop Navigation Sidebar */}
-            <aside className="hidden md:flex flex-col w-64 border-r border-gray-200 bg-white min-h-[calc(100vh-65px)] p-4 space-y-2">
-              <div className="px-3 py-2 text-xs font-semibold uppercase text-gray-400 tracking-wider">
-                Workspace Navigation
-              </div>
+            <aside className="hidden md:flex flex-col w-64 border-r border-[var(--color-border)] bg-[var(--color-surface)] min-h-[calc(100vh-65px)] p-4 space-y-2">
+              <div className="px-3 py-2 text-[11px] font-bold uppercase text-[var(--color-text-muted)] tracking-wider">Workspace Navigation</div>
               {NAV_ITEMS.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setActiveSection(item.id)}
                   className={`w-full flex items-start gap-3 p-3 rounded-xl text-left transition-all ${
-                    activeSection === item.id
-                      ? 'bg-indigo-50 border border-indigo-200 text-indigo-900 font-semibold shadow-sm'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    activeSection === item.id ? 'bg-indigo-50/70 border border-indigo-200 text-indigo-950 font-semibold shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-bg)]'
                   }`}
                 >
                   <span className="text-base">{item.icon}</span>
                   <div>
-                    <div className="text-sm font-medium">{item.label}</div>
-                    <div className="text-xs text-gray-400 font-normal line-clamp-1">{item.desc}</div>
+                    <div className="text-sm font-semibold">{item.label}</div>
+                    <div className="text-xs font-normal opacity-75 line-clamp-1">{item.desc}</div>
                   </div>
                 </button>
               ))}
 
-              <div className="mt-auto p-4 bg-indigo-50/50 rounded-xl border border-indigo-100/60 text-xs text-gray-600">
-                <div className="font-semibold text-indigo-900 mb-1">Kemmy Constitution</div>
-                <p className="text-[11px] leading-relaxed text-gray-500">
-                  "Technology should adapt to people—not the other way around."
-                </p>
+              <div className="mt-auto p-4 bg-indigo-50/40 rounded-xl border border-indigo-100/60 text-xs text-[var(--color-text-muted)]">
+                <div className="font-bold text-indigo-950 mb-1">Kemmy Constitution</div>
+                <p className="text-[11px] leading-relaxed opacity-85">"Technology should adapt to people—not the other way around."</p>
               </div>
             </aside>
 
@@ -236,166 +279,89 @@
               {/* HOME VIEW */}
               {activeSection === 'home' && (
                 <div className="space-y-6">
-                  <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-teal-600 text-white rounded-2xl p-6 shadow-sm">
-                    <div className="max-w-2xl space-y-2">
-                      <span className="text-xs uppercase tracking-widest font-semibold text-teal-200">
-                        Learner Sanctuary • Balanced Focus (3/5)
-                      </span>
-                      <h2 className="text-2xl font-bold">Welcome back, Alex</h2>
-                      <p className="text-sm text-indigo-100 leading-relaxed">
-                        “Progress is measured by understanding, not exhaustion. Focus on one meaningful step at a time.”
-                      </p>
-                    </div>
+                  <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-emerald-900 text-white rounded-2xl p-6 shadow-sm">
+                    <span className="text-[11px] uppercase tracking-widest font-bold text-emerald-300">Learner Sanctuary • Flexible Progress</span>
+                    <h2 className="text-2xl font-bold mt-1">Welcome back, {user.name}</h2>
+                    <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed mt-1 opacity-90">
+                      “Progress is measured by understanding, not exhaustion. Focus on one meaningful step at a time.”
+                    </p>
+                  </div>
+
+                  {/* Natural State Expression */}
+                  <div className="calm-card p-6">
+                    <h3 className="text-lg font-semibold mb-1">How are your circumstances feeling today?</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] mb-3">Express your situation naturally — Kemmy adapts without forcing rigid mood labels.</p>
+                    {expressedState ? (
+                      <div className="p-4 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs text-indigo-950 flex justify-between items-center">
+                        <div>
+                          <strong className="block text-[11px] uppercase text-indigo-800 font-bold">Expressed Context:</strong>
+                          <p className="text-sm font-semibold mt-0.5">"{expressedState}"</p>
+                        </div>
+                        <button onClick={() => setExpressedState(null)} className="text-xs text-indigo-700 underline font-semibold">Update</button>
+                      </div>
+                    ) : (
+                      <form onSubmit={handleStateSubmit} className="flex gap-2">
+                        <input
+                          type="text"
+                          value={stateInput}
+                          onChange={e => setStateInput(e.target.value)}
+                          placeholder='e.g. "I have no energy today but I still need to finish two assignments"'
+                          className="flex-1 px-4 py-2.5 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs sm:text-sm"
+                        />
+                        <button type="submit" className="btn-calm-primary text-xs py-2.5 px-4">Share Context</button>
+                      </form>
+                    )}
                   </div>
 
                   {/* Single Next Best Step Card */}
                   {nextBestStep ? (
                     <div className="calm-card next-best-step-card p-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-bold text-gray-900">Today's Single Next Best Step</h3>
-                        <span className="text-xs font-semibold text-indigo-700 bg-indigo-100 px-2.5 py-0.5 rounded-full">
-                          Recommended
-                        </span>
+                      <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-lg font-bold">Today's Single Next Best Step</h3>
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-900">Recommended</span>
                       </div>
-                      <p className="text-xs text-gray-500 mb-4">
-                        Selected to minimize cognitive load based on your current energy score (3/5)
-                      </p>
+                      <p className="text-xs text-[var(--color-text-muted)] mb-4">Selected to minimize choice paralysis based on your current context</p>
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
-                              📚 Study Session
-                            </span>
-                            <span className="text-xs text-gray-500">• {nextBestStep.duration}</span>
-                            <span className="text-xs font-medium text-teal-600">• {nextBestStep.energy} Energy</span>
-                          </div>
-                          <h4 className="text-lg font-bold text-gray-900">{nextBestStep.title}</h4>
-                          <p className="text-xs text-gray-500">Goal: Build solid foundational understanding for Kemmy architecture.</p>
+                        <div>
+                          <h4 className="text-lg font-bold">{nextBestStep.title}</h4>
+                          <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{nextBestStep.duration} mins • {nextBestStep.energy} Energy</p>
                         </div>
                         <button onClick={() => setActiveSection('learn')} className="btn-calm-primary text-xs py-2.5 px-5">
-                          Start {nextBestStep.duration} Focus Block
+                          Start {nextBestStep.duration}m Focus Block
                         </button>
                       </div>
                     </div>
-                  ) : (
-                    <div className="calm-card p-6 border-emerald-200 bg-emerald-50/50">
-                      <h3 className="text-lg font-bold text-emerald-900">All Tasks Completed!</h3>
-                      <p className="text-xs text-emerald-700 mt-1">Great effort today! Rest and reflect freely.</p>
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="calm-card p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900">Manageable Priorities</h3>
-                        <button onClick={() => setActiveSection('plan')} className="text-xs font-medium text-indigo-600 hover:underline">
-                          View All →
-                        </button>
-                      </div>
-                      <div className="space-y-3">
-                        {tasks.map(t => (
-                          <div key={t.id} className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <input
-                                type="checkbox"
-                                checked={t.done}
-                                onChange={() => {
-                                  setTasks(prev => prev.map(item => item.id === t.id ? { ...item, done: !item.done } : item));
-                                }}
-                                className="w-4 h-4 rounded text-indigo-600"
-                              />
-                              <div>
-                                <div className={`text-sm font-medium ${t.done ? 'line-through text-gray-400' : 'text-gray-800'}`}>
-                                  {t.title}
-                                </div>
-                                <div className="text-xs text-gray-400">{t.duration} • {t.energy} Energy</div>
-                              </div>
-                            </div>
-                            <span className={`text-xs px-2 py-0.5 rounded font-medium ${t.done ? 'bg-emerald-50 text-emerald-600' : 'bg-indigo-50 text-indigo-700'}`}>
-                              {t.done ? 'Completed' : 'Pending'}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="calm-card p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Adaptive AI Guidance</h3>
-                      <div className="p-4 bg-teal-50/60 border border-teal-100 rounded-xl space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-teal-800 uppercase">🌿 Energy Balance Insight</span>
-                          <span className="text-[10px] text-teal-600 font-medium">Explainable AI</span>
-                        </div>
-                        <p className="text-xs text-teal-900 leading-relaxed">
-                          "Your energy peak typically occurs between 10 AM and 12 PM. Kemmy placed your heaviest study block here so you can rest comfortably this evening."
-                        </p>
-                        <button onClick={() => setActiveSection('companion')} className="text-xs font-medium text-teal-700 hover:underline block pt-2">
-                          Ask Companion →
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  ) : null}
                 </div>
               )}
 
               {/* PLAN VIEW */}
               {activeSection === 'plan' && (
                 <div className="space-y-6">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)]">
                     <div>
-                      <h2 className="text-xl font-bold text-gray-900">Adaptive Planner & Schedule</h2>
-                      <p className="text-xs text-gray-500 mt-1">Energy-aware time management designed around your life circumstances.</p>
+                      <h2 className="text-xl font-bold">Adaptive Planner & Calendar</h2>
+                      <p className="text-xs text-[var(--color-text-muted)] mt-1">Energy-aware schedule management connected directly with your calendar dates.</p>
                     </div>
-                    <button onClick={triggerReplanning} className="btn-calm-secondary text-xs py-2.5 px-4 flex items-center gap-2">
-                      <span>🌿</span>
-                      <span>Trigger Baseline Replanning</span>
-                    </button>
+                    <div className="flex gap-2">
+                      <button onClick={() => setShowChangeOfPlansModal(true)} className="btn-calm-secondary text-xs py-2 px-3.5">🌿 Change of Plans</button>
+                      <button onClick={() => setShowAddTaskModal(true)} className="btn-calm-primary text-xs py-2 px-4">+ Add Plan</button>
+                    </div>
                   </div>
 
-                  {isReplanned && (
-                    <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-start gap-3">
-                      <span className="text-base">✨</span>
-                      <div>
-                        <strong className="font-semibold text-emerald-950">Schedule Calmly Rebalanced!</strong>
-                        <p className="mt-0.5 text-emerald-800">
-                          Kemmy postponed high-energy items to tomorrow to prevent burnout. Your baseline remaining workload is simplified. No lost streaks, zero penalties.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
                   <div className="calm-card p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Today's Task List</h3>
+                    <h3 className="text-lg font-semibold mb-3">Scheduled Focus Blocks for 2026-08-15</h3>
                     <div className="space-y-3">
                       {tasks.map(t => (
-                        <div key={t.id} className="p-4 bg-gray-50/70 rounded-xl border border-gray-200/60 flex items-center justify-between">
+                        <div key={t.id} className="p-4 bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] flex justify-between items-center">
                           <div className="flex items-center gap-3">
-                            <input
-                              type="checkbox"
-                              checked={t.done}
-                              onChange={() => {
-                                setTasks(prev => prev.map(item => item.id === t.id ? { ...item, done: !item.done } : item));
-                              }}
-                              className="w-4 h-4 text-indigo-600 rounded"
-                            />
-                            <span className={`text-sm font-medium ${t.done ? 'line-through text-gray-400' : 'text-gray-800'}`}>
-                              {t.title}
-                            </span>
+                            <input type="checkbox" checked={t.done} onChange={() => setTasks(prev => prev.map(item => item.id === t.id ? { ...item, done: !item.done } : item))} className="w-4 h-4 rounded text-indigo-600" />
+                            <span className={`text-sm font-semibold ${t.done ? 'line-through opacity-50' : ''}`}>{t.title}</span>
                           </div>
-                          <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg">
-                            {t.duration} • {t.energy} Energy
-                          </span>
+                          <span className="text-xs font-semibold px-2.5 py-1 rounded bg-indigo-100 text-indigo-900">{t.duration}m • {t.energy}</span>
                         </div>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="calm-card p-6 border-dashed border-indigo-200 bg-gradient-to-br from-indigo-50/20 to-teal-50/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-gray-800">Google Calendar Two-Way Sync</h4>
-                      <span className="badge-roadmap">Planned Future Integration</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Will import official university/work calendar events into Kemmy's schedule view automatically.</p>
                   </div>
                 </div>
               )}
@@ -403,57 +369,37 @@
               {/* COMPANION VIEW */}
               {activeSection === 'companion' && (
                 <div className="space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center justify-between">
-                    <div>
-                      <h2 className="text-xl font-bold text-gray-900">Kemmy Companion</h2>
-                      <p className="text-xs text-gray-500 mt-0.5">Empathetic, clear, and patient AI study & planning guidance (10 AI Principles).</p>
-                    </div>
-                    <span className="badge-roadmap">Gemini API Connected</span>
+                  <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)]">
+                    <h2 className="text-xl font-bold">Kemmy Companion</h2>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Empathetic, clear, and patient AI study & planning guidance (10 AI Principles).</p>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 calm-card p-4 flex flex-col justify-between h-[450px]">
-                      <div className="overflow-y-auto space-y-4 pr-2 flex-1">
-                        {chatMessages.map((m, idx) => (
-                          <div key={idx} className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}>
-                            <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed ${m.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-indigo-50/80 border border-indigo-100 text-gray-800'}`}>
-                              {m.text}
-                            </div>
-                            {m.explanation && (
-                              <div className="mt-1 max-w-[85%] p-2 bg-amber-50/70 border border-amber-200/60 rounded-lg text-[11px] text-amber-900">
-                                <strong className="font-semibold text-amber-950">AI Rationale:</strong> {m.explanation}
-                              </div>
-                            )}
+                  <div className="calm-card p-4 flex flex-col justify-between h-[450px]">
+                    <div className="overflow-y-auto space-y-4 pr-2 flex-1">
+                      {chatMessages.map(m => (
+                        <div key={m.id} className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                          <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed ${m.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-indigo-50/80 text-indigo-950 border border-indigo-100'}`}>
+                            {m.text}
                           </div>
-                        ))}
-                      </div>
-
-                      <div className="pt-3 border-t border-gray-100 flex gap-2">
-                        <input
-                          type="text"
-                          value={chatInput}
-                          onChange={e => setChatInput(e.target.value)}
-                          onKeyDown={e => e.key === 'Enter' && handleSendChat()}
-                          placeholder="Ask Kemmy for study guidance..."
-                          className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-                        />
-                        <button onClick={handleSendChat} className="btn-calm-primary text-xs py-2.5 px-4">
-                          Send
-                        </button>
-                      </div>
+                          {m.explanation && (
+                            <div className="mt-1.5 max-w-[85%] p-2.5 bg-amber-50/80 border border-amber-200/80 rounded-xl text-[11px] text-amber-950">
+                              <strong className="font-bold block uppercase text-[10px]">AI Rationale:</strong> {m.explanation}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
 
-                    <div className="space-y-4">
-                      <div className="calm-card p-4">
-                        <h4 className="font-semibold text-sm mb-3">Quick Prompts</h4>
-                        <div className="space-y-2">
-                          {["Break down React Context for me", "I'm feeling overwhelmed today", "How should I structure my study session?"].map((chip, i) => (
-                            <button key={i} onClick={() => setChatInput(chip)} className="w-full text-left p-3 rounded-xl border border-gray-200 hover:bg-indigo-50/40 text-xs text-gray-700">
-                              💬 "{chip}"
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="pt-3 border-t border-[var(--color-border)] flex gap-2">
+                      <input
+                        type="text"
+                        value={chatInput}
+                        onChange={e => setChatInput(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && handleSendChat()}
+                        placeholder="Ask Kemmy anything about your schedule or study concepts..."
+                        className="flex-1 px-4 py-2.5 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-xs sm:text-sm"
+                      />
+                      <button onClick={handleSendChat} className="btn-calm-primary text-xs py-2.5 px-4">Send</button>
                     </div>
                   </div>
                 </div>
@@ -462,80 +408,40 @@
               {/* LEARN VIEW */}
               {activeSection === 'learn' && (
                 <div className="space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                    <h2 className="text-xl font-bold text-gray-900">Personalized Learning Workspace</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Bite-sized concept explanations and study support.</p>
+                  <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)]">
+                    <h2 className="text-xl font-bold">Adaptive Learning Workspace</h2>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Import materials, take study notes, and work interactively with Kemmy AI.</p>
                   </div>
 
                   <div className="calm-card p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-gray-900">React Hooks & Custom State Contexts</h3>
-                      <span className="text-xs font-semibold text-teal-700 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
-                        5-Min Bite-Sized Reading
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      Custom Hooks allow you to extract component logic into reusable functions. They begin with <code className="bg-gray-100 px-1 py-0.5 rounded text-xs text-indigo-700">use</code> and help maintain clean, modular architecture.
+                    <h3 className="text-lg font-bold">React Hooks & Custom State Contexts</h3>
+                    <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                      Custom Hooks extract component logic into reusable functions. They begin with <code className="bg-gray-200 px-1 py-0.5 rounded text-xs text-indigo-800">use</code> and separate side effects from UI code.
                     </p>
-                    <div className="p-4 bg-teal-50/50 rounded-xl border border-teal-100 text-xs text-teal-900">
-                      <strong>💡 Kemmy Study Tip:</strong> Focus on understanding how state flows through context rather than memorizing boilerplate syntax.
-                    </div>
                   </div>
                 </div>
               )}
 
-              {/* GROWTH VIEW (Constraint #1: Minimal Journal) */}
+              {/* GROWTH VIEW */}
               {activeSection === 'growth' && (
                 <div className="space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                    <h2 className="text-xl font-bold text-gray-900">Growth & Reflection Space</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Holistic human development and self-guided reflection.</p>
+                  <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)]">
+                    <h2 className="text-xl font-bold">Growth & Reflection Space</h2>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Progress analysis layer & self-guided reflection.</p>
                   </div>
 
                   <div className="calm-card p-6 space-y-4">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Daily Reflection Journal</h3>
-                      <p className="text-xs text-gray-500">Constraint #1: Intentionally minimal reflection space — 1 text field + optional prompts.</p>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Optional Prompts:</label>
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          "What is one concept I understood clearly today?",
-                          "How did my energy levels affect my progress today?",
-                          "What can I celebrate about my efforts today?"
-                        ].map((p, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setJournalText(prev => prev ? `${prev}\n\nPrompt: ${p}\n` : `Prompt: ${p}\n`)}
-                            className="px-3 py-1.5 rounded-lg border border-indigo-100 bg-indigo-50/50 hover:bg-indigo-100 text-xs text-indigo-800"
-                          >
-                            💡 {p}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
+                    <h3 className="text-lg font-semibold">Daily Reflection Journal</h3>
                     <textarea
                       rows={6}
                       value={journalText}
                       onChange={e => setJournalText(e.target.value)}
-                      placeholder="Write your reflection freely..."
-                      className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                      placeholder="Write your thoughts freely..."
+                      className="w-full p-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-sm"
                     />
-
-                    <div className="flex justify-between items-center pt-2">
-                      <span className="text-xs text-gray-400">*Private local storage ONLY. No tags, folders, or AI text analysis.</span>
-                      <button
-                        onClick={() => {
-                          alert('Reflection saved locally!');
-                          setJournalText('');
-                        }}
-                        className="btn-calm-primary text-xs py-2 px-5"
-                      >
-                        Save Journal Entry
-                      </button>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-[var(--color-text-muted)]">*Private local storage ONLY.</span>
+                      <button onClick={() => { alert('Saved!'); setJournalText(''); }} className="btn-calm-primary text-xs py-2 px-5">Save Journal</button>
                     </div>
                   </div>
                 </div>
@@ -544,32 +450,29 @@
               {/* PROFILE VIEW */}
               {activeSection === 'profile' && (
                 <div className="space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                    <h2 className="text-xl font-bold text-gray-900">Profile & Ethical Governance</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Ethical pricing, privacy guarantees, and data ownership.</p>
+                  <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)]">
+                    <h2 className="text-xl font-bold">Account & Kemmy Preferences</h2>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Manage your account identity and AI interaction settings.</p>
                   </div>
 
                   <div className="calm-card p-6 space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Kemmy Tier Alignment</h3>
-                    <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900">
-                      <strong>Active Tier: Kemmy Baseline (Free Forever)</strong>
-                      <p className="mt-1">Includes core tasks, energy tracking, and the free baseline Dynamic Replanner ("I'm Overwhelmed"). No Paywalled Safety. No Artificial Scarcity.</p>
-                    </div>
+                    <h3 className="text-lg font-semibold">Visual Environment Mode</h3>
+                    <button onClick={toggleTheme} className="btn-calm-secondary text-xs py-2 px-4">
+                      {themeMode === 'open_daylight' ? 'Switch to Calm Night 🌙' : 'Switch to Open Daylight ☀️'}
+                    </button>
                   </div>
                 </div>
               )}
             </main>
           </div>
 
-          {/* Mobile Bottom Navigation */}
-          <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-gray-200 px-2 py-2 flex items-center justify-around">
+          {/* Mobile Navigation */}
+          <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-[var(--color-surface)] border-t border-[var(--color-border)] px-2 py-2 flex items-center justify-around">
             {NAV_ITEMS.slice(0, 5).map(item => (
               <button
                 key={item.id}
                 onClick={() => setActiveSection(item.id)}
-                className={`flex flex-col items-center py-1 px-2 rounded-lg text-xs ${
-                  activeSection === item.id ? 'text-indigo-600 font-semibold' : 'text-gray-500'
-                }`}
+                className={`flex flex-col items-center py-1 px-2 rounded-lg text-xs ${activeSection === item.id ? 'text-[var(--color-primary)] font-bold' : 'text-[var(--color-text-muted)]'}`}
               >
                 <span className="text-lg">{item.icon}</span>
                 <span className="text-[10px] mt-0.5">{item.label}</span>
@@ -577,24 +480,18 @@
             ))}
           </nav>
 
-          {/* Dynamic Replanning Modal */}
-          {showOverwhelmedModal && (
+          {/* Change of Plans Modal */}
+          {showChangeOfPlansModal && (
             <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-teal-100">
-                <div className="flex items-center gap-3 text-teal-600 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-xl">🌿</div>
-                  <h3 className="text-lg font-bold text-gray-900">Dynamic Replanning</h3>
+              <div className="bg-[var(--color-surface)] rounded-2xl p-6 max-w-md w-full shadow-2xl border border-[var(--color-border)] space-y-4">
+                <div className="flex items-center gap-3 text-indigo-900">
+                  <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-xl">🌿</div>
+                  <h3 className="text-lg font-bold">Change of Plans</h3>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Kemmy’s free baseline safety tool will rebalance your schedule, move non-urgent items to tomorrow, and lower your daily target—with zero guilt or lost streaks.
-                </p>
-                <div className="mt-6 flex items-center justify-end gap-3">
-                  <button onClick={() => setShowOverwhelmedModal(false)} className="px-4 py-2 text-xs font-medium text-gray-500">
-                    Cancel
-                  </button>
-                  <button onClick={triggerReplanning} className="btn-calm-secondary text-xs py-2 px-4">
-                    Rebalance My Day
-                  </button>
+                <p className="text-xs text-[var(--color-text-muted)]">Kemmy will postpone heavy focus blocks to tomorrow so you can focus on a single manageable step today. Zero penalties or guilt.</p>
+                <div className="flex justify-end gap-3 pt-2">
+                  <button onClick={() => setShowChangeOfPlansModal(false)} className="px-4 py-2 text-xs text-[var(--color-text-muted)]">Cancel</button>
+                  <button onClick={triggerReplanning} className="btn-calm-primary text-xs py-2 px-4">Accept Adapted Plan</button>
                 </div>
               </div>
             </div>

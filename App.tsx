@@ -20,12 +20,12 @@ export const App: React.FC = () => {
           <LearningProvider>
             <AIProvider>
               <AppShell>
-                {(activeSection, onNavigate) => {
+                {(activeSection, onNavigate, onOpenAddTask) => {
                   switch (activeSection) {
                     case 'home':
-                      return <HomePage onNavigate={onNavigate} />;
+                      return <HomePage onNavigate={onNavigate} onOpenAddTask={onOpenAddTask} />;
                     case 'plan':
-                      return <PlanPage />;
+                      return <PlanPage onOpenAddTask={onOpenAddTask} />;
                     case 'companion':
                       return <CompanionPage />;
                     case 'learn':
@@ -35,7 +35,7 @@ export const App: React.FC = () => {
                     case 'profile':
                       return <ProfilePage />;
                     default:
-                      return <HomePage onNavigate={onNavigate} />;
+                      return <HomePage onNavigate={onNavigate} onOpenAddTask={onOpenAddTask} />;
                   }
                 }}
               </AppShell>
